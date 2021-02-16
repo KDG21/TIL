@@ -24,9 +24,13 @@ my_setting.py
 *.png
 *.jpeg
 *.jpg
+*.h5
 images/
 myImg/
 titanic/
+logs/
+runs/
+
 
 
 # External tool builders
