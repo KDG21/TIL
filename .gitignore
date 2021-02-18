@@ -25,6 +25,7 @@ my_setting.py
 *.jpeg
 *.jpg
 *.h5
+*.hdf5
 images/
 myImg/
 titanic/
