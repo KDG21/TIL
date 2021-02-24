@@ -26,11 +26,13 @@ my_setting.py
 *.jpg
 *.h5
 *.hdf5
+*.zip
 images/
 myImg/
 titanic/
 logs/
 runs/
+img/
 archive/
 
 
