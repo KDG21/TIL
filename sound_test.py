@@ -2,7 +2,8 @@ import moviepy.editor as mp
 import numpy as np
 import parselmouth
 import numpy as np
-import matplotlib.pyplot as plt
+import plotly.express as px
+import plotly.graph_objects as go
 
 # clip = mp.VideoFileClip('C:\\Users\\USER\\Downloads\\present.mp4')
 # clip.audio.write_audiofile('C:\\Users\\USER\\Downloads\\audio.wav')
@@ -12,7 +13,7 @@ file = audio_path.split('/')[4]
 
 
 pitch_values = []
-pitch_ceiling = 400   # In Hz, change according to gender
+pitch_ceiling = 400    # In Hz, change according to gender
 pitch_floor = 50    # In Hz, change according to gender
 smooth_bandwidth = 5
 
@@ -42,20 +43,24 @@ def set_pitch_analysis(pitch_analysis):
     smoothed = pitch_analysis.smooth(bandwidth=smooth_bandwidth).selected_array['frequency']
     smoothed[smoothed == 0] = np.nan
 
-    draw_pitch(interpolated, pitch_analysis.xs())
+    draw_pitch(pitch_values, smoothed, interpolated, pitch_analysis.xs())
     print(np.nanmean(interpolated))
 
-def draw_pitch(interpolated, xaxis):
-    plt.clf()
-    plt.ylim(pitch_floor, pitch_ceiling)
-    plt.ylabel("Fundamental Frequency (Hz)")
-    plt.xlabel("Time (s)")
-    # plt.plot(xaxis, pitch, color='red', label='pitch')
-    plt.plot(xaxis, interpolated, color='purple', label='interpolated', alpha=0.5)
-    # plt.plot(xaxis, smoothed, color='blue', label='smoothed')
-    plt.legend()
-    plt.title('Pitch '+file)
-    plt.savefig('Pitch '+file.replace('wav', 'png'))
+def draw_pitch(pitch, smoothed, interpolated, xaxis):
+    fig = go.Figure()
+    fig.add_trace(go.Scatter(
+        x=xaxis[1:],
+        y=interpolated,
+        name="interpolated",
+        line=dict(color='Gray', width=1.5)
+    )
+    )
+    print(np.nanmean(interpolated))
+    print(np.nanmean(smoothed))
+    print(np.nanmean(pitch))
+    print(np.nanstd(pitch))
+    fig.write_image("fig1.png")
+    fig.show()
 
 
 set_pitch_analysis(extract_pitch(load_wave(audio_path)))
